@@ -11,16 +11,39 @@
 // 	});
 // });
 
+// document.addEventListener("DOMContentLoaded", () => {
+// 	const navLinks = document.querySelectorAll(".nav-links li a");
+// 	const currentPath = window.location.pathname.replace(/\/$/, ""); // remove trailing slash
+
+// 	navLinks.forEach((link) => {
+// 		link.removeAttribute("aria-current");
+
+// 		const linkPath = new URL(link.href).pathname.replace(/\/$/, "");
+
+// 		if (linkPath === currentPath) {
+// 			link.setAttribute("aria-current", "page");
+// 		}
+// 	});
+// });
+
 document.addEventListener("DOMContentLoaded", () => {
 	const navLinks = document.querySelectorAll(".nav-links li a");
-	const currentPath = window.location.pathname.replace(/\/$/, ""); // remove trailing slash
+
+	// Get only the filename (e.g., "about.html")
+	let currentPage = window.location.pathname.split("/").pop();
+
+	// When at "/": treat as "index.html"
+	if (currentPage === "" || currentPage === "/") {
+		currentPage = "index.html";
+	}
 
 	navLinks.forEach((link) => {
 		link.removeAttribute("aria-current");
 
-		const linkPath = new URL(link.href).pathname.replace(/\/$/, "");
+		// Get filename from each link
+		let linkPage = link.getAttribute("href").split("/").pop();
 
-		if (linkPath === currentPath) {
+		if (linkPage === currentPage) {
 			link.setAttribute("aria-current", "page");
 		}
 	});
