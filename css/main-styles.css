@@ -306,6 +306,18 @@ html[data-theme="dark"] .theme-toggle .moon {
 	padding-top: 110px;
 }
 
+.footer {
+	height: 200px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+}
+
+#copyright {
+	font-size: 20px;
+}
+
 @media (max-width: 768px) {
 	.hamburger-menu-btn {
 		display: block;

@@ -13,19 +13,33 @@
 
 .hero-main-heading {
 	font-size: var(--font-size-h1);
+	color: black;
 	text-shadow: 0 4px 4px rgba(0, 0, 0, 0.4);
 }
 
-section#about,
-section#ministries,
-section#events,
-section#services {
+.hero-secondary-heading {
+	color: black;
+}
+
+#about,
+#events {
+	background-color: #b3b3b3;
+}
+
+#ministries,
+#services {
+	background-color: #a3a3a3;
+}
+
+#about,
+#ministries,
+#events,
+#services {
 	/* position: relative; */
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
-	color: white;
-	text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+	text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 	padding: 80px 20px;
 	text-align: center;
 	display: flex;
@@ -34,10 +48,10 @@ section#services {
 	align-items: center;
 }
 
-section#about::before,
-section#ministries::before,
-section#events::before,
-section#services::before {
+#about::before,
+#ministries::before,
+#events::before,
+#services::before {
 	content: "";
 	/* position: absolute; */
 	top: 0;
@@ -48,23 +62,37 @@ section#services::before {
 	z-index: 0;
 }
 
-section#about h2,
-section#ministries h2,
-section#events h2,
-section#services h2 {
+#about h2,
+#ministries h2,
+#events h2,
+#services h2 {
 	/* position: relative; */
 	/* z-index: 1; */
 	font-size: var(--font-size-h1);
 }
 
 /* GENERAL SECTIONS =============================== */
-section#about,
-section#ministries,
-section#events,
-section#services {
+#about,
+#ministries,
+#events,
+#services {
 	padding: 60px 20px;
 	/* max-width: 1000px; */
 	margin: auto;
+}
+
+#about p,
+#ministries p,
+#events p {
+	padding-bottom: 30px;
+}
+
+.service-time-and-days {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	padding-bottom: 30px;
 }
 
 h2 {
@@ -105,29 +133,44 @@ h3 {
 /* ===============================
   BUTTONS
 =============================== */
-.call-to-action-btn a {
-	display: inline-block;
+
+.call-to-action-btn {
+	padding: 20px 20px;
+	background-color: #090446;
+	border-radius: 5px;
+	text-decoration: none;
+	color: wheat;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	transition: background-color 0.4s ease;
+}
+
+/* .call-to-action-btn-span {
 	margin-top: 15px;
 	padding: 10px 20px;
 	background: var(--color-primary);
-	color: white;
 	text-decoration: none;
 	border-radius: 5px;
 	transition: background 0.3s ease;
 	font-size: var(--font-size-btn);
+} */
+
+.call-to-action-btn:hover {
+	background-color: #7692ff;
 }
 
-.call-to-action-btn a:hover {
-	background: var(--color-primary-dark);
+.service-time-and-days {
+	list-style-type: none;
+	text-align: center;
 }
 
 /* Tablets */
 @media (max-width: 992px) {
 	/* section#hero .hero-content, */
-	section#about h1,
-	section#ministries h1,
-	section#events h1,
-	section#services h1 {
+	#about h1,
+	#ministries h1,
+	#events h1,
+	#services h1 {
 		font-size: var(--font-size-h1-tablet);
 	}
 
@@ -148,10 +191,10 @@ h3 {
 	}
 
 	/* section#hero .hero-content, */
-	section#about h1,
-	section#ministries h1,
-	section#events h1,
-	section#services h1 {
+	#about h1,
+	#ministries h1,
+	#events h1,
+	#services h1 {
 		font-size: var(--font-size-h1-mobile);
 	}
 
@@ -168,10 +211,10 @@ h3 {
 	}
 
 	#about,
-	section#about,
-	section#ministries,
-	section#events,
-	section#services {
+	#about,
+	#ministries,
+	#events,
+	#services {
 		padding: 40px 15px;
 	}
 }
@@ -187,10 +230,10 @@ h3 {
 	}
 
 	/* section#hero .hero-content, */
-	section#about h1,
-	section#ministries h1,
-	section#events h1,
-	section#services h1 {
+	#about h1,
+	#ministries h1,
+	#events h1,
+	#services h1 {
 		font-size: var(--font-size-h1-small);
 	}
 
