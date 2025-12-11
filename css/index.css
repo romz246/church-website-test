@@ -222,7 +222,7 @@ h3 {
 /* Small phones */
 @media (max-width: 480px) {
 	.hero-section {
-		padding-top: 75px;
+		padding-top: 40px;
 	}
 
 	.hero-main-heading {
