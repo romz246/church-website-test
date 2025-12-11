@@ -1,81 +1,30 @@
 // Automatically hightlights the current page
-// document.addEventListener("DOMContentLoaded", () => {
-// 	const navLinks = document.querySelectorAll(".nav-links li a");
-// 	const currentURL = window.location.href;
 
-// 	navLinks.forEach((link) => {
-// 		link.removeAttribute("aria-current");
-// 		if (link.href === currentURL) {
-// 			link.setAttribute("aria-current", "page");
-// 		}
-// 	});
-// });
+function currentPgHighlight() {
+	document.addEventListener("DOMContentLoaded", () => {
+		const navLinks = document.querySelectorAll(".nav-links li a");
 
-//
+		// Normalize the current URL (remove query strings & hashes)
+		const current = window.location.href.split(/[?#]/)[0];
 
-// document.addEventListener("DOMContentLoaded", () => {
-// 	const navLinks = document.querySelectorAll(".nav-links li a");
-// 	const currentPath = window.location.pathname.replace(/\/$/, ""); // remove trailing slash
+		navLinks.forEach((link) => {
+			link.removeAttribute("aria-current");
 
-// 	navLinks.forEach((link) => {
-// 		link.removeAttribute("aria-current");
+			// Normalize link href in the exact same way
+			const linkURL = link.href.split(/[?#]/)[0];
 
-// 		const linkPath = new URL(link.href).pathname.replace(/\/$/, "");
-
-// 		if (linkPath === currentPath) {
-// 			link.setAttribute("aria-current", "page");
-// 		}
-// 	});
-// });
-
-//
-
-// document.addEventListener("DOMContentLoaded", () => {
-// 	const navLinks = document.querySelectorAll(".nav-links li a");
-
-// 	// Get only the filename (e.g., "about.html")
-// 	let currentPage = window.location.pathname.split("/").pop();
-
-// 	// When at "/": treat as "index.html"
-// 	if (currentPage === "" || currentPage === "/") {
-// 		currentPage = "index.html";
-// 	}
-
-// 	navLinks.forEach((link) => {
-// 		link.removeAttribute("aria-current");
-
-// 		// Get filename from each link
-// 		let linkPage = link.getAttribute("href").split("/").pop();
-
-// 		if (linkPage === currentPage) {
-// 			link.setAttribute("aria-current", "page");
-// 		}
-// 	});
-// });
-
-//
-
-document.addEventListener("DOMContentLoaded", () => {
-	const navLinks = document.querySelectorAll(".nav-links li a");
-
-	// Normalize the current URL (remove query strings & hashes)
-	const current = window.location.href.split(/[?#]/)[0];
-
-	navLinks.forEach((link) => {
-		link.removeAttribute("aria-current");
-
-		// Normalize link href in the exact same way
-		const linkURL = link.href.split(/[?#]/)[0];
-
-		// Direct comparison of fully-resolved absolute URLs
-		if (
-			linkURL === current ||
-			(current.endsWith("/") && linkURL.endsWith("/index.html"))
-		) {
-			link.setAttribute("aria-current", "page");
-		}
+			// Direct comparison of fully-resolved absolute URLs
+			if (
+				linkURL === current ||
+				(current.endsWith("/") && linkURL.endsWith("/index.html"))
+			) {
+				link.setAttribute("aria-current", "page");
+			}
+		});
 	});
-});
+}
+
+currentPgHighlight();
 
 // Dark Mode Toggle
 
@@ -132,7 +81,7 @@ hamburgerMneu();
 
 function copyrightYear() {
 	const yearSpan = document.getElementById("year");
-	const startYear = 2024;
+	const startYear = 2025;
 
 	// Set current text
 	const currentYear = new Date().getFullYear();
