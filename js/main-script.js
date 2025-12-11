@@ -1,11 +1,26 @@
 // Automatically hightlights the current page
+// document.addEventListener("DOMContentLoaded", () => {
+// 	const navLinks = document.querySelectorAll(".nav-links li a");
+// 	const currentURL = window.location.href;
+
+// 	navLinks.forEach((link) => {
+// 		link.removeAttribute("aria-current");
+// 		if (link.href === currentURL) {
+// 			link.setAttribute("aria-current", "page");
+// 		}
+// 	});
+// });
+
 document.addEventListener("DOMContentLoaded", () => {
 	const navLinks = document.querySelectorAll(".nav-links li a");
-	const currentURL = window.location.href;
+	const currentPath = window.location.pathname.replace(/\/$/, ""); // remove trailing slash
 
 	navLinks.forEach((link) => {
 		link.removeAttribute("aria-current");
-		if (link.href === currentURL) {
+
+		const linkPath = new URL(link.href).pathname.replace(/\/$/, "");
+
+		if (linkPath === currentPath) {
 			link.setAttribute("aria-current", "page");
 		}
 	});
