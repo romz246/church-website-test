@@ -323,6 +323,10 @@ html[data-theme="dark"] .theme-toggle .moon {
 		padding-block: 15px;
 	}
 
+	.main-header-logo-container {
+		width: 70px;
+	}
+
 	.hamburger-menu-btn {
 		display: block;
 	}
