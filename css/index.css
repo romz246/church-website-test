@@ -1,7 +1,3 @@
-/* .hero-section {
-	padding-top: 55px;
-} */
-
 .hero-heading-container {
 	background-attachment: fixed;
 	background-repeat: no-repeat;
@@ -147,6 +143,10 @@ h3 {
 
 /* Mobile */
 @media (max-width: 768px) {
+	.hero-heading-container {
+		background-attachment: scroll;
+	}
+
 	/* section#hero .hero-content, */
 	section#about h1,
 	section#ministries h1,
@@ -178,9 +178,14 @@ h3 {
 
 /* Small phones */
 @media (max-width: 480px) {
-	.hero-heading-container {
-		background-attachment: scroll;
+	.hero-section {
+		padding-top: 75px;
 	}
+
+	.hero-main-heading {
+		font-size: 4rem;
+	}
+
 	/* section#hero .hero-content, */
 	section#about h1,
 	section#ministries h1,
