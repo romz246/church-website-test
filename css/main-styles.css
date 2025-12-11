@@ -324,7 +324,7 @@ html[data-theme="dark"] .theme-toggle .moon {
 	}
 
 	.main-header-logo-container {
-		width: 70px;
+		width: 200px;
 	}
 
 	.hamburger-menu-btn {
@@ -358,16 +358,6 @@ html[data-theme="dark"] .theme-toggle .moon {
 		opacity: 1;
 		max-height: 500px;
 		transform: translateX(0);
-	}
-}
-
-@media (max-width: 480px) {
-	.main-header {
-		padding-block: 15px;
-	}
-
-	.main-header-logo-container {
-		width: 70px;
 	}
 }
 
