@@ -11,6 +11,8 @@
 // 	});
 // });
 
+//
+
 // document.addEventListener("DOMContentLoaded", () => {
 // 	const navLinks = document.querySelectorAll(".nav-links li a");
 // 	const currentPath = window.location.pathname.replace(/\/$/, ""); // remove trailing slash
@@ -26,24 +28,50 @@
 // 	});
 // });
 
+//
+
+// document.addEventListener("DOMContentLoaded", () => {
+// 	const navLinks = document.querySelectorAll(".nav-links li a");
+
+// 	// Get only the filename (e.g., "about.html")
+// 	let currentPage = window.location.pathname.split("/").pop();
+
+// 	// When at "/": treat as "index.html"
+// 	if (currentPage === "" || currentPage === "/") {
+// 		currentPage = "index.html";
+// 	}
+
+// 	navLinks.forEach((link) => {
+// 		link.removeAttribute("aria-current");
+
+// 		// Get filename from each link
+// 		let linkPage = link.getAttribute("href").split("/").pop();
+
+// 		if (linkPage === currentPage) {
+// 			link.setAttribute("aria-current", "page");
+// 		}
+// 	});
+// });
+
+//
+
 document.addEventListener("DOMContentLoaded", () => {
 	const navLinks = document.querySelectorAll(".nav-links li a");
 
-	// Get only the filename (e.g., "about.html")
-	let currentPage = window.location.pathname.split("/").pop();
-
-	// When at "/": treat as "index.html"
-	if (currentPage === "" || currentPage === "/") {
-		currentPage = "index.html";
-	}
+	// Normalize the current URL (remove query strings & hashes)
+	const current = window.location.href.split(/[?#]/)[0];
 
 	navLinks.forEach((link) => {
 		link.removeAttribute("aria-current");
 
-		// Get filename from each link
-		let linkPage = link.getAttribute("href").split("/").pop();
+		// Normalize link href in the exact same way
+		const linkURL = link.href.split(/[?#]/)[0];
 
-		if (linkPage === currentPage) {
+		// Direct comparison of fully-resolved absolute URLs
+		if (
+			linkURL === current ||
+			(current.endsWith("/") && linkURL.endsWith("/index.html"))
+		) {
 			link.setAttribute("aria-current", "page");
 		}
 	});
