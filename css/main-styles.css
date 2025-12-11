@@ -361,6 +361,16 @@ html[data-theme="dark"] .theme-toggle .moon {
 	}
 }
 
+@media (max-width: 480px) {
+	.main-header {
+		padding-block: 15px;
+	}
+
+	.main-header-logo-container {
+		width: 70px;
+	}
+}
+
 /* 
 
 Background: #1A1A1A (rich black)
