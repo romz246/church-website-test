@@ -314,6 +314,28 @@ html[data-theme="dark"] .theme-toggle .moon {
 	text-align: center;
 }
 
+.social-media-icon-container {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+}
+
+.social-media-text {
+	font-size: 2rem;
+	text-transform: capitalize;
+	letter-spacing: 2px;
+}
+
+.instagram-icon {
+	transition: transform 0.4s ease-in-out;
+}
+
+.instagram-icon:hover {
+	transform: scale(1.2);
+}
+
 #copyright {
 	font-size: 20px;
 }
