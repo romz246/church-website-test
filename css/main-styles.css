@@ -306,26 +306,29 @@ html[data-theme="dark"] .theme-toggle .moon {
 	padding-top: 110px;
 }
 
-.footer {
+.footer-container {
 	height: 200px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	text-align: center;
+	padding-block: 150px;
 }
 
 .social-media-icon-container {
 	display: flex;
-	justify-content: center;
 	flex-direction: column;
+	justify-content: center;
 	align-items: center;
-	text-align: center;
+	margin-bottom: 30px;
 }
 
 .social-media-text {
 	font-size: 2rem;
 	text-transform: capitalize;
 	letter-spacing: 2px;
+	text-decoration: underline;
+	margin-bottom: 20px;
 }
 
 .instagram-icon {
