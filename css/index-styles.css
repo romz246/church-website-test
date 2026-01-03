@@ -236,6 +236,30 @@
 	height: 250px;
 }
 
+@media (max-width: 1040px) {
+	/* .hero-sub-heading {
+		font-size: 1.5rem;
+	}
+
+	.hero-heading {
+		font-size: 3.25rem;
+	} */
+
+	.event-section-cards-container {
+		flex-direction: column;
+	}
+
+	.event-section-cards {
+		margin-block: 50px;
+	}
+
+	.event-divider {
+		border: 1px solid black;
+		width: 250px;
+		height: 1px;
+	}
+}
+
 @media (max-width: 768px) {
 	.hero-sub-heading {
 		font-size: 1.5rem;
