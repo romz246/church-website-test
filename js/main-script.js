@@ -57,27 +57,43 @@ currentPgHighlight();
 
 // darkModeToggle();
 
-// function hamburgerMneu() {
-// 	const hamburgerMenuBtn = document.getElementById("hamburger-menu-btn");
+function hamburgerMenu() {
+	const button = document.getElementById("hamburger-menu-btn");
+	if (!button) return;
 
-// 	const navLinks = document.getElementById("nav-links");
+	const navId = button.getAttribute("aria-controls");
+	const nav = document.getElementById(navId);
+	if (!nav) return;
 
-// 	hamburgerMenuBtn.addEventListener("click", () => {
-// 		const currentState = hamburgerMenuBtn.getAttribute("data-state");
+	const links = nav.querySelectorAll("a");
 
-// 		if (!currentState || currentState === "closed") {
-// 			hamburgerMenuBtn.setAttribute("data-state", "opened");
-// 			hamburgerMenuBtn.setAttribute("aria-expanded", "true");
-// 			navLinks.classList.toggle("open");
-// 		} else {
-// 			hamburgerMenuBtn.setAttribute("data-state", "closed");
-// 			hamburgerMenuBtn.setAttribute("aria-expanded", "false");
-// 			navLinks.classList.remove("open");
-// 		}
-// 	});
-// }
+	function closeMenu() {
+		button.setAttribute("aria-expanded", "false");
+		nav.classList.remove("open");
+	}
 
-// hamburgerMneu();
+	function openMenu() {
+		button.setAttribute("aria-expanded", "true");
+		nav.classList.add("open");
+	}
+
+	button.addEventListener("click", () => {
+		const isOpen = button.getAttribute("aria-expanded") === "true";
+		isOpen ? closeMenu() : openMenu();
+	});
+
+	// Close on link click
+	links.forEach((link) => link.addEventListener("click", closeMenu));
+
+	// Close with Escape
+	document.addEventListener("keydown", (e) => {
+		if (e.key === "Escape") closeMenu();
+	});
+}
+
+document.addEventListener("DOMContentLoaded", hamburgerMenu);
+
+//
 
 function copyrightYear() {
 	const yearSpan = document.getElementById("year");

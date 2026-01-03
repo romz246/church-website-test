@@ -1,7 +1,10 @@
+// No Small Dots On The Last Slide
+
 function initSlideshow({
 	selector = ".slideshow",
 	images = [],
 	intervalTime = 5000,
+	steps = 3, // number of small dots between slides
 }) {
 	const slideshow = document.querySelector(selector);
 	const slidesContainer = slideshow.querySelector(".slides");
@@ -9,43 +12,66 @@ function initSlideshow({
 	const nextBtn = slideshow.querySelector(".arrow.right");
 	const prevBtn = slideshow.querySelector(".arrow.left");
 
-	let currentIndex = 1;
-	let position = -100;
-	let target = -100;
-	let lastTime = 0;
+	let currentIndex = 0;
 	let startX = 0;
+	let timer;
+	let stepInterval;
+	let stepIndex = 0;
+	let dotSequence = [];
 
-	/* ---------- BUILD SLIDES (WITH CLONES) ---------- */
-	const sources = [images.at(-1), ...images, images[0]];
-
-	sources.forEach((src) => {
+	/* ---------- BUILD SLIDES ---------- */
+	images.forEach((src) => {
 		const slide = document.createElement("div");
 		slide.className = "slide";
 		slide.innerHTML = `<img src="${src}" alt="">`;
 		slidesContainer.appendChild(slide);
 	});
 
-	/* ---------- DOTS ---------- */
+	const slides = slidesContainer.querySelectorAll(".slide");
+	const total = slides.length;
+
+	/* ---------- BUILD DOT SEQUENCE ---------- */
 	images.forEach((_, i) => {
-		const dot = document.createElement("div");
-		dot.className = "dot";
-		dot.onclick = () => goTo(i + 1);
-		dotsContainer.appendChild(dot);
+		// Big dot
+		const bigDot = document.createElement("div");
+		bigDot.className = "dot";
+		bigDot.onclick = () => goTo(i);
+		dotsContainer.appendChild(bigDot);
+		dotSequence.push({ type: "big", element: bigDot, slideIndex: i });
+
+		// Add small dots ONLY if not the last image
+		if (i < images.length - 1) {
+			for (let s = 0; s < steps; s++) {
+				const smallDot = document.createElement("div");
+				smallDot.className = "small-dot";
+				dotsContainer.appendChild(smallDot);
+				dotSequence.push({ type: "small", element: smallDot, slideIndex: i });
+			}
+		}
 	});
 
-	const dots = dotsContainer.children;
+	/* ---------- UPDATE SLIDES ---------- */
+	function updateSlides() {
+		slidesContainer.style.transform = `translateX(${-currentIndex * 100}%)`;
 
-	function updateDots() {
-		[...dots].forEach((d, i) =>
-			d.classList.toggle("active", i === currentIndex - 1),
-		);
+		// Highlight the current big dot
+		dotSequence.forEach((dot) => {
+			if (dot.type === "big") {
+				dot.element.classList.toggle("active", dot.slideIndex === currentIndex);
+			}
+			if (dot.type === "small") {
+				dot.element.style.backgroundColor = "rgba(255,255,255,0.3)";
+			}
+		});
+
+		resetStepDots();
 	}
 
-	/* ---------- MOVEMENT ---------- */
+	/* ---------- NAVIGATION ---------- */
 	function goTo(index) {
-		currentIndex = index;
-		target = -currentIndex * 100;
-		updateDots();
+		currentIndex = (index + total) % total;
+		updateSlides();
+		resetTimer();
 	}
 
 	function next() {
@@ -56,48 +82,44 @@ function initSlideshow({
 		goTo(currentIndex - 1);
 	}
 
-	function animate(time) {
-		if (!lastTime) lastTime = time;
-		const delta = time - lastTime;
-		lastTime = time;
+	/* ---------- FILL SMALL DOTS SEQUENTIALLY ---------- */
+	function resetStepDots() {
+		clearInterval(stepInterval);
+		stepIndex = 0;
 
-		position += (target - position) * Math.min(delta / 400, 1);
-		slidesContainer.style.transform = `translateX(${position}%)`;
+		// Small dots for the current slide
+		const currentDots = dotSequence.filter(
+			(dot) => dot.slideIndex === currentIndex && dot.type === "small",
+		);
+		const stepTime = intervalTime / (currentDots.length + 1);
 
-		// Snap cleanly after reaching clones
-		if (Math.abs(target - position) < 0.05) {
-			let snapped = false;
+		if (currentDots.length === 0) return; // no small dots (last slide)
 
-			if (currentIndex === sources.length - 1) {
-				currentIndex = 1;
-				position = target = -100;
-				snapped = true;
-			}
-
-			if (currentIndex === 0) {
-				currentIndex = sources.length - 2;
-				position = target = -currentIndex * 100;
-				snapped = true;
-			}
-
-			if (snapped) updateDots();
-		}
-
-		requestAnimationFrame(animate);
+		stepInterval = setInterval(() => {
+			currentDots.forEach((dot, i) => {
+				dot.element.style.backgroundColor =
+					i === stepIndex ? "#c2a14a" : "rgba(255,255,255,0.3)";
+			});
+			stepIndex++;
+			if (stepIndex >= currentDots.length) stepIndex = 0;
+		}, stepTime);
 	}
 
-	/* ---------- AUTOPLAY ---------- */
-	setInterval(next, intervalTime);
+	function resetTimer() {
+		clearTimeout(timer);
+		resetStepDots();
+		timer = setTimeout(next, intervalTime);
+	}
 
-	/* ---------- EVENTS ---------- */
+	/* ---------- BUTTON EVENTS ---------- */
 	nextBtn.onclick = next;
 	prevBtn.onclick = prev;
 
+	/* ---------- TOUCH EVENTS ---------- */
 	slidesContainer.addEventListener(
 		"touchstart",
 		(e) => (startX = e.touches[0].clientX),
 	);
-
 	slidesContainer.addEventListener("touchend", (e) => {
 		const diff = startX - e.changedTouches[0].clientX;
 		if (diff > 50) next();
@@ -105,10 +127,11 @@ function initSlideshow({
 	});
 
 	/* ---------- INIT ---------- */
-	updateDots();
-	requestAnimationFrame(animate);
+	updateSlides();
+	resetTimer();
 }
 
+/* ---------- USAGE EXAMPLE ---------- */
 initSlideshow({
 	images: [
 		"https://picsum.photos/id/1015/1200/600",
@@ -117,4 +140,160 @@ initSlideshow({
 		"https://picsum.photos/id/1035/1200/600",
 	],
 	intervalTime: 5000,
+	steps: 3,
 });
+
+//
+
+//
+
+//
+
+//
+
+// Include Smaller Dots For The Last Slide
+
+// function initSlideshow({
+// 	selector = ".slideshow",
+// 	images = [],
+// 	intervalTime = 5000,
+// 	steps = 3, // number of small dots between slides
+// 	includeLastSlideDots = true, // toggle for last slide small dots
+// }) {
+// 	const slideshow = document.querySelector(selector);
+// 	const slidesContainer = slideshow.querySelector(".slides");
+// 	const dotsContainer = slideshow.querySelector(".dots");
+// 	const nextBtn = slideshow.querySelector(".arrow.right");
+// 	const prevBtn = slideshow.querySelector(".arrow.left");
+
+// 	let currentIndex = 0;
+// 	let startX = 0;
+// 	let timer;
+// 	let stepInterval;
+// 	let stepIndex = 0;
+// 	let dotSequence = [];
+
+// 	/* ---------- BUILD SLIDES ---------- */
+// 	images.forEach((src) => {
+// 		const slide = document.createElement("div");
+// 		slide.className = "slide";
+// 		slide.innerHTML = `<img src="${src}" alt="">`;
+// 		slidesContainer.appendChild(slide);
+// 	});
+
+// 	const slides = slidesContainer.querySelectorAll(".slide");
+// 	const total = slides.length;
+
+// 	/* ---------- BUILD DOT SEQUENCE ---------- */
+// 	images.forEach((_, i) => {
+// 		// Big dot
+// 		const bigDot = document.createElement("div");
+// 		bigDot.className = "dot";
+// 		bigDot.onclick = () => goTo(i);
+// 		dotsContainer.appendChild(bigDot);
+// 		dotSequence.push({ type: "big", element: bigDot, slideIndex: i });
+
+// 		// Add small dots after this big dot
+// 		// Include for last slide only if includeLastSlideDots is true
+// 		if (i < images.length - 1 || includeLastSlideDots) {
+// 			for (let s = 0; s < steps; s++) {
+// 				const smallDot = document.createElement("div");
+// 				smallDot.className = "small-dot";
+// 				dotsContainer.appendChild(smallDot);
+// 				dotSequence.push({ type: "small", element: smallDot, slideIndex: i });
+// 			}
+// 		}
+// 	});
+
+// 	/* ---------- UPDATE SLIDES ---------- */
+// 	function updateSlides() {
+// 		slidesContainer.style.transform = `translateX(${-currentIndex * 100}%)`;
+
+// 		// Highlight the current big dot
+// 		dotSequence.forEach((dot) => {
+// 			if (dot.type === "big") {
+// 				dot.element.classList.toggle("active", dot.slideIndex === currentIndex);
+// 			}
+// 			if (dot.type === "small") {
+// 				dot.element.style.backgroundColor = "rgba(255,255,255,0.3)";
+// 			}
+// 		});
+
+// 		resetStepDots();
+// 	}
+
+// 	/* ---------- NAVIGATION ---------- */
+// 	function goTo(index) {
+// 		currentIndex = (index + total) % total;
+// 		updateSlides();
+// 		resetTimer();
+// 	}
+
+// 	function next() {
+// 		goTo(currentIndex + 1);
+// 	}
+
+// 	function prev() {
+// 		goTo(currentIndex - 1);
+// 	}
+
+// 	/* ---------- FILL SMALL DOTS SEQUENTIALLY ---------- */
+// 	function resetStepDots() {
+// 		clearInterval(stepInterval);
+// 		stepIndex = 0;
+
+// 		const currentDots = dotSequence.filter(
+// 			(dot) => dot.slideIndex === currentIndex && dot.type === "small",
+// 		);
+// 		if (currentDots.length === 0) return;
+
+// 		const stepTime = intervalTime / (currentDots.length + 1);
+
+// 		stepInterval = setInterval(() => {
+// 			currentDots.forEach((dot, i) => {
+// 				dot.element.style.backgroundColor =
+// 					i === stepIndex ? "#c2a14a" : "rgba(255,255,255,0.3)";
+// 			});
+// 			stepIndex++;
+// 			if (stepIndex >= currentDots.length) stepIndex = 0;
+// 		}, stepTime);
+// 	}
+
+// 	function resetTimer() {
+// 		clearTimeout(timer);
+// 		resetStepDots();
+// 		timer = setTimeout(next, intervalTime);
+// 	}
+
+// 	/* ---------- BUTTON EVENTS ---------- */
+// 	nextBtn.onclick = next;
+// 	prevBtn.onclick = prev;
+
+// 	/* ---------- TOUCH EVENTS ---------- */
+// 	slidesContainer.addEventListener(
+// 		"touchstart",
+// 		(e) => (startX = e.touches[0].clientX),
+// 	);
+// 	slidesContainer.addEventListener("touchend", (e) => {
+// 		const diff = startX - e.changedTouches[0].clientX;
+// 		if (diff > 50) next();
+// 		if (diff < -50) prev();
+// 	});
+
+// 	/* ---------- INIT ---------- */
+// 	updateSlides();
+// 	resetTimer();
+// }
+
+// /* ---------- USAGE EXAMPLE ---------- */
+// initSlideshow({
+// 	images: [
+// 		"https://picsum.photos/id/1015/1200/600",
+// 		"https://picsum.photos/id/1016/1200/600",
+// 		"https://picsum.photos/id/1024/1200/600",
+// 		"https://picsum.photos/id/1035/1200/600",
+// 	],
+// 	intervalTime: 5000,
+// 	steps: 3,
+// 	includeLastSlideDots: true, // change to false to remove last slide dots
+// });
