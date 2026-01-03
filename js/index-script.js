@@ -134,10 +134,13 @@ function initSlideshow({
 /* ---------- USAGE EXAMPLE ---------- */
 initSlideshow({
 	images: [
-		"https://picsum.photos/id/1015/1200/600",
-		"https://picsum.photos/id/1016/1200/600",
-		"https://picsum.photos/id/1024/1200/600",
-		"https://picsum.photos/id/1035/1200/600",
+		"https://images.unsplash.com/photo-1472905981516-5ac09f35b7f4?q=80&w=1474&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+
+		"https://images.unsplash.com/photo-1552592570-8e98dd7d2ccf?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+
+		"https://images.unsplash.com/photo-1517373062-f3b2f3f98ada?q=80&w=1373&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+
+		"https://images.unsplash.com/photo-1499209974431-9dddcece7f88?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 	],
 	intervalTime: 5000,
 	steps: 3,
