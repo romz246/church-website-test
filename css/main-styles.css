@@ -56,7 +56,8 @@ html:focus-within {
 }
 
 body {
-	min-height: 100svh;
+	min-height: 100vh;
+	min-height: 100dvh;
 	transition:
 		background 0.5s ease,
 		color 0.5s ease;
