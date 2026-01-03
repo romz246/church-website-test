@@ -381,8 +381,7 @@ a {
 		width: 250px; /* menu width */
 
 		flex-direction: column;
-		/* background: #410b13; */
-		background-color: red;
+		background: #410b13;
 		padding: 2rem 1.5rem;
 		gap: 1.5rem;
 
