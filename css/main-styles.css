@@ -280,7 +280,8 @@ a {
 }
 
 .instagram-icon {
-  transition: transform 0.4s ease-in-out;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .instagram-icon:hover {

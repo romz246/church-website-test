@@ -1,27 +1,27 @@
 // Automatically hightlights the current page
 
 function currentPgHighlight() {
-	document.addEventListener("DOMContentLoaded", () => {
-		const navLinks = document.querySelectorAll(".nav-links li a");
+  document.addEventListener("DOMContentLoaded", () => {
+    const navLinks = document.querySelectorAll(".nav-links li a");
 
-		// Normalize the current URL (remove query strings & hashes)
-		const current = window.location.href.split(/[?#]/)[0];
+    // Normalize the current URL (remove query strings & hashes)
+    const current = window.location.href.split(/[?#]/)[0];
 
-		navLinks.forEach((link) => {
-			link.removeAttribute("aria-current");
+    navLinks.forEach((link) => {
+      link.removeAttribute("aria-current");
 
-			// Normalize link href in the exact same way
-			const linkURL = link.href.split(/[?#]/)[0];
+      // Normalize link href in the exact same way
+      const linkURL = link.href.split(/[?#]/)[0];
 
-			// Direct comparison of fully-resolved absolute URLs
-			if (
-				linkURL === current ||
-				(current.endsWith("/") && linkURL.endsWith("/index.html"))
-			) {
-				link.setAttribute("aria-current", "page");
-			}
-		});
-	});
+      // Direct comparison of fully-resolved absolute URLs
+      if (
+        linkURL === current ||
+        (current.endsWith("/") && linkURL.endsWith("/index.html"))
+      ) {
+        link.setAttribute("aria-current", "page");
+      }
+    });
+  });
 }
 
 currentPgHighlight();
@@ -58,37 +58,37 @@ currentPgHighlight();
 // darkModeToggle();
 
 function hamburgerMenu() {
-	const button = document.getElementById("hamburger-menu-btn");
-	if (!button) return;
+  const button = document.getElementById("hamburger-menu-btn");
+  if (!button) return;
 
-	const navId = button.getAttribute("aria-controls");
-	const nav = document.getElementById(navId);
-	if (!nav) return;
+  const navId = button.getAttribute("aria-controls");
+  const nav = document.getElementById(navId);
+  if (!nav) return;
 
-	const links = nav.querySelectorAll("a");
+  const links = nav.querySelectorAll("a");
 
-	function closeMenu() {
-		button.setAttribute("aria-expanded", "false");
-		nav.classList.remove("open");
-	}
+  function closeMenu() {
+    button.setAttribute("aria-expanded", "false");
+    nav.classList.remove("open");
+  }
 
-	function openMenu() {
-		button.setAttribute("aria-expanded", "true");
-		nav.classList.add("open");
-	}
+  function openMenu() {
+    button.setAttribute("aria-expanded", "true");
+    nav.classList.add("open");
+  }
 
-	button.addEventListener("click", () => {
-		const isOpen = button.getAttribute("aria-expanded") === "true";
-		isOpen ? closeMenu() : openMenu();
-	});
+  button.addEventListener("click", () => {
+    const isOpen = button.getAttribute("aria-expanded") === "true";
+    isOpen ? closeMenu() : openMenu();
+  });
 
-	// Close on link click
-	links.forEach((link) => link.addEventListener("click", closeMenu));
+  // Close on link click
+  links.forEach((link) => link.addEventListener("click", closeMenu));
 
-	// Close with Escape
-	document.addEventListener("keydown", (e) => {
-		if (e.key === "Escape") closeMenu();
-	});
+  // Close with Escape
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeMenu();
+  });
 }
 
 document.addEventListener("DOMContentLoaded", hamburgerMenu);
@@ -96,29 +96,29 @@ document.addEventListener("DOMContentLoaded", hamburgerMenu);
 //
 
 function copyrightYear() {
-	const yearSpan = document.getElementById("year");
-	const startYear = 2025;
+  const yearSpan = document.getElementById("year");
+  const startYear = 2025;
 
-	// Set current text
-	const currentYear = new Date().getFullYear();
-	yearSpan.textContent =
-		startYear === currentYear
-			? `${startYear}`
-			: `${startYear} - ${currentYear}`;
+  // Set current text
+  const currentYear = new Date().getFullYear();
+  yearSpan.textContent =
+    startYear === currentYear
+      ? `${startYear}`
+      : `${startYear} - ${currentYear}`;
 
-	// Calculate milliseconds until next year
-	const present = new Date();
-	const nextYear = new Date(currentYear + 1, 0, 1);
-	const msUntilNextYear = nextYear - present;
+  // Calculate milliseconds until next year
+  const present = new Date();
+  const nextYear = new Date(currentYear + 1, 0, 1);
+  const msUntilNextYear = nextYear - present;
 
-	// Schedule update at midnight Jan 1
-	setTimeout(() => {
-		const newYear = new Date().getFullYear();
-		yearSpan.textContent =
-			startYear === newYear ? `${startYear}` : `${startYear} - ${newYear}`;
-		// Schedule the next update recursively
-		copyrightYear();
-	}, msUntilNextYear);
+  // Schedule update at midnight Jan 1
+  setTimeout(() => {
+    const newYear = new Date().getFullYear();
+    yearSpan.textContent =
+      startYear === newYear ? `${startYear}` : `${startYear} - ${newYear}`;
+    // Schedule the next update recursively
+    copyrightYear();
+  }, msUntilNextYear);
 }
 
 copyrightYear();
@@ -126,69 +126,54 @@ copyrightYear();
 //
 
 function scrollToTop() {
-	const scrollBtn = document.getElementById("scrollToTop");
+  const scrollBtn = document.getElementById("scrollToTop");
+  if (!scrollBtn) return;
 
-	const doc = document.documentElement;
+  const doc = document.documentElement;
+  const body = document.body;
+  let isTicking = false;
 
-	const body = document.body;
+  const getScrollTop = () =>
+    doc.scrollTop || body.scrollTop || window.pageYOffset;
 
-	let isTicking = false;
+  const getScrollHeight = () =>
+    Math.max(
+      body.scrollHeight,
+      doc.scrollHeight,
+      body.offsetHeight,
+      doc.offsetHeight,
+      doc.clientHeight,
+    ) - window.innerHeight;
 
-	// Function to update the scroll progress and button visibility
-	const updateScrollProgress = () => {
-		// Use window.scrollY for better compatibility and scroll calculation
-		const scrollTop = window.scrollY || document.documentElement.scrollTop;
-		// Get the total height of the page and the viewport
-		const scrollHeight =
-			Math.max(
-				body.scrollHeight,
-				doc.scrollHeight,
-				body.offsetHeight,
-				doc.offsetHeight,
-				doc.clientHeight,
-			) - window.innerHeight; // Total scrollable height minus the viewport height
+  const updateScrollProgress = () => {
+    const scrollTop = getScrollTop();
+    const scrollHeight = getScrollHeight();
 
-		// Calculate the scroll progress as a percentage
-		let progress = scrollHeight === 0 ? 0 : (scrollTop / scrollHeight) * 100;
+    let progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    progress = Math.min(100, Math.max(0, Math.round(progress)));
 
-		// Force progress to 100% when it's very close to the bottom
-		if (progress > 99.99) {
-			progress = 100;
-		}
+    scrollBtn.classList.toggle("show", scrollTop > 300);
+    scrollBtn.style.setProperty("--progress", `${progress}%`);
 
-		// Round the progress to the nearest integer
-		progress = Math.round(progress);
+    isTicking = false;
+  };
 
-		// Toggle the button visibility (only show if scrolled > 100px)
-		scrollBtn.classList.toggle("show", scrollTop > 500);
+  const handleScroll = () => {
+    if (!isTicking) {
+      requestAnimationFrame(updateScrollProgress);
+      isTicking = true;
+    }
+  };
 
-		// Update the custom CSS property for the progress (this updates the progress bar)
-		scrollBtn.style.setProperty("--progress", `${progress}%`);
+  scrollBtn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
 
-		// Reset the ticking flag
-		isTicking = false;
-	};
+  window.addEventListener("scroll", handleScroll, { passive: true });
+  window.addEventListener("resize", updateScrollProgress);
+  window.addEventListener("load", updateScrollProgress);
 
-	// Scroll event handler with requestAnimationFrame for better performance
-	const handleScroll = () => {
-		if (!isTicking) {
-			requestAnimationFrame(updateScrollProgress);
-			isTicking = true;
-		}
-	};
-
-	// Smooth scroll to the top when the button is clicked
-	const scrollToTopHandler = () => {
-		window.scrollTo({
-			top: 0,
-			behavior: "smooth",
-		});
-	};
-
-	// Attach event listeners
-	scrollBtn.addEventListener("click", scrollToTopHandler);
-	window.addEventListener("scroll", handleScroll);
-	window.addEventListener("load", updateScrollProgress);
+  updateScrollProgress();
 }
 
 scrollToTop();
